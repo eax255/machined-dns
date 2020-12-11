@@ -1,0 +1,6 @@
+[Unit]
+Description=Machined dns
+[Socket]
+ListenDatagram=127.0.0.54:53
+[Install]
+WantedBy=sockets.target
