@@ -4,3 +4,4 @@ Description=Machined dns service
 [Service]
 Type=simple
 ExecStart=/usr/local/bin/machined-dns
+DynamicUser=yes
