@@ -37,7 +37,7 @@ struct evdns_server_port ** dns_servers = NULL;
 size_t dns_server_count = 0;
 
 int get_ip(struct evdns_server_request* request, const struct evdns_server_question *query, sd_bus* bus){
-	int ret = -1;
+	int ret = 1;
 	sd_bus_error error = SD_BUS_ERROR_NULL;
 	sd_bus_message *message = NULL;
 	char type;
@@ -116,6 +116,8 @@ void server_callback(struct evdns_server_request *request, void *data){
 		int ok = -1;
 		const struct evdns_server_question *q = request->questions[i];
 		ok = get_ip(request, q, data);
+		if(ok>0)
+			error = DNS_ERR_NOTEXIST;
 		if(ok<0 && error==DNS_ERR_NONE)
 			error = DNS_ERR_SERVERFAILED;
 	}
