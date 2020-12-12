@@ -90,16 +90,14 @@ int get_ip(struct evdns_server_request* request, const struct evdns_server_quest
 			goto end;
 		}
 
-		if(inettype == 2 && query->type == EVDNS_TYPE_A){
-			if(!(ip[0] == 169 && ip[1] == 254)){
+		if((inettype == 2) && !(ip[0] == 169 && ip[1] == 254)){
+			ret = 0;
+			if(query->type == EVDNS_TYPE_A)
 				evdns_server_request_add_a_reply(request, query->name, 1, ip, 60);
-				ret=0;
-			}
-		} else if(inettype == 10 && query->type == EVDNS_TYPE_AAAA){
-			if(!(ip[0]==0xfe && (ip[1]&0xc0) == 0x80)){
+		} else if((inettype == 10) && !(ip[0]==0xfe && (ip[1]&0xc0) == 0x80)){
+			ret = 0;
+			if(query->type == EVDNS_TYPE_AAAA)
 				evdns_server_request_add_aaaa_reply(request, query->name, 1, ip, 60);
-				ret=0;
-			}
 		}
 
 		sd_bus_message_exit_container(message);
